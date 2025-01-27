@@ -3,13 +3,34 @@ body {
 }
 
 button {
-  background-color: red;
+  background-color: olivedrab;
   color: white;
-  padding: 10px;
+  padding: 3px;
   border-radius: 16px;
-  transition: all 1s ease;
 }
 
-button:hover {
-  transform: scale(1.2) rotate(10deg);
+.download-button {
+  display: grid;
+  place-items: center;
+}
+
+svg {
+  grid-area: 1 / 1;
+  transition: transform 200ms cubic-bezier(0.785, 0.135, 0.15, 0.86);
+}
+
+svg:first-of-type {
+  transform: translateY(-150%);
+}
+
+.download-button {
+  overflow: hidden;
+}
+
+.download-button:hover svg:first-of-type {
+  transform: translateY(0);
+}
+
+.download-button:hover svg:last-of-type {
+  transform: translateY(150%);
 }
