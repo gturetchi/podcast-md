@@ -3,8 +3,11 @@ import "public/styles.css";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
+    { title: "podcaST" },
+    {
+      name: "description",
+      content: "Bine ai venit la podcast-ul podcaST de Sergiu Tronciu",
+    },
   ];
 };
 
