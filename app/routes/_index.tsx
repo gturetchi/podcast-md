@@ -18,6 +18,7 @@ export default function Index() {
         <button className="download-button box p-2 text-cyan-50">
           {ArrowDown}
           {ArrowDown}
+          PodcaST
         </button>
       </div>
     </>
