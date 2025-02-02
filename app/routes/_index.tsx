@@ -1,5 +1,9 @@
 import type { MetaFunction } from "@remix-run/node";
+import { useEffect, useRef } from "react";
 import "public/styles.css";
+import { renderer } from "react-dom";
+
+import * as THREE from "three";
 
 export const meta: MetaFunction = () => {
   return [
@@ -12,34 +16,49 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Index() {
+  const mountRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!mountRef.current) return;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
+    );
+
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    mountRef.current.appendChild(renderer.domElement);
+
+    const geometry = new THREE.BoxGeometry(1, 1, 1);
+    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    const cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+    camera.position.z = 5;
+
+    const animate = () => {
+      requestAnimationFrame(animate);
+
+      cube.rotation.x += 0.01;
+      cube.rotation.y += 0.01;
+
+      renderer.render(scene, camera);
+    };
+
+    animate();
+
+    return () => {
+      renderer.dispose();
+      mountRef.current?.removeChild(renderer.domElement);
+    };
+  }, []);
+
   return (
-    <>
-      <div className="flex justify-center items-center h-screen">
-        <button className="download-button box p-2 text-cyan-50">
-          {ArrowDown}
-          {ArrowDown}
-          PodcaST
-        </button>
-      </div>
-    </>
+    <div className="flex justify-center items-center h-screen w-screen">
+      <div ref={mountRef} className="absolute top-0 left-0 w-full h-full" />
+    </div>
   );
 }
-
-const ArrowDown = (
-  <svg
-    width="18"
-    height="18"
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className="arrow"
-  >
-    <path
-      d="M18.25 14L12 20.25L5.75 14M12 19.5V3.75"
-      stroke="white"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
