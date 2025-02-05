@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 import "public/styles.css";
 
 import * as THREE from "three";
+import { Sky } from "app/components/objects/sky";
 
 export const meta: MetaFunction = () => {
   return [
@@ -71,30 +72,17 @@ export default function Index() {
 
     scene.add(ground);
 
-    //RENDER CLOUDS
-    const geomCloud = new THREE.BoxGeometry(20, 20, 20);
-    const matCloud = new THREE.MeshPhongMaterial({ colors: 0xffffff });
+    const sky = new Sky();
+    sky.mesh.position.y = -600;
+    scene.add(sky.mesh);
 
-    const nClouds = 3 + Math.floor(Math.random() * 3);
-
-    for (let i = 0; i < nClouds; i++) {
-      const m = new THREE.Mesh(geomCloud, matCloud);
-      m.position.x = i * 15;
-      m.position.y = Math.random() * 10;
-      m.position.z = Math.random() * 10;
-      m.rotation.z = Math.random() * Math.PI * 2;
-      m.rotation.y = Math.random() * Math.PI * 2;
-
-      const s = 0.1 + Math.random() * 0.9;
-      m.scale.set(s, s, s);
-
-      m.castShadow = true;
-      m.receiveShadow = true;
-
-      scene.add(m);
+    function loop() {
+      sky.mesh.rotation.z += 0.003;
+      renderer.render(scene, camera);
+      requestAnimationFrame(loop);
     }
 
-    renderer.render(scene, camera);
+    loop();
 
     return () => {
       renderer.dispose();
