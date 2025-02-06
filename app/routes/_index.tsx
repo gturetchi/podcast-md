@@ -4,6 +4,7 @@ import "public/styles.css";
 
 import * as THREE from "three";
 import { Sky } from "app/components/objects/sky";
+import { Sea } from "app/components/objects/sea";
 
 export const meta: MetaFunction = () => {
   return [
@@ -57,20 +58,11 @@ export default function Index() {
     scene.add(hemisphereLight);
     scene.add(shadowLight);
 
-    const geom = new THREE.CylinderGeometry(600, 600, 800, 40, 10);
-    geom.applyMatrix4(new THREE.Matrix4().makeRotationX(-Math.PI / 2));
-    const mat = new THREE.MeshPhongMaterial({
-      color: 0x68c3c0,
-      transparent: true,
-      opacity: 0.6,
-      shading: THREE.FlatShading,
-    });
+    const sea = new Sea();
+    sea.mesh.receiveShadow = true;
+    sea.mesh.position.y = -600;
 
-    const ground = new THREE.Mesh(geom, mat);
-    ground.receiveShadow = true;
-    ground.position.y = -600;
-
-    scene.add(ground);
+    scene.add(sea.mesh);
 
     const sky = new Sky();
     sky.mesh.position.y = -600;
