@@ -5,6 +5,7 @@ import "public/styles.css";
 import * as THREE from "three";
 import { Sky } from "app/components/objects/sky";
 import { Sea } from "app/components/objects/sea";
+import { Airplane } from "~/components/objects/Airplane";
 
 export const meta: MetaFunction = () => {
   return [
@@ -67,6 +68,9 @@ export default function Index() {
     const sky = new Sky();
     sky.mesh.position.y = -600;
     scene.add(sky.mesh);
+
+    const plane = new Airplane();
+    scene.add(plane.mesh);
 
     function loop() {
       sky.mesh.rotation.z += 0.003;
