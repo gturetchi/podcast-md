@@ -2,6 +2,7 @@ import * as THREE from "three";
 
 export class Airplane {
   mesh: THREE.Object3D = new THREE.Object3D();
+  propeller: THREE.Mesh;
 
   constructor() {
     this.createAirplane();
@@ -49,5 +50,31 @@ export class Airplane {
     sideWing.castShadow = true;
     sideWing.receiveShadow = true;
     this.mesh.add(sideWing);
+
+    // propeller
+    const geomPropeller = new THREE.BoxGeometry(20, 10, 10, 1, 1, 1);
+    const matPropeller = new THREE.MeshPhongMaterial({
+      color: 0x23190f,
+      shading: THREE.FlatShading,
+    });
+
+    this.propeller = new THREE.Mesh(geomPropeller, matPropeller);
+    this.propeller.castShadow = true;
+    this.propeller.receiveShadow = true;
+
+    // blades
+    const geomBlade = new THREE.BoxGeometry(1, 100, 20, 1, 1, 1);
+    const matBlade = new THREE.MeshPhongMaterial({
+      color: 0x23190f,
+      shading: THREE.FlatShading,
+    });
+
+    const blade = new THREE.Mesh(geomBlade, matBlade);
+    blade.position.set(8, 0, 0);
+    blade.castShadow = true;
+    blade.receiveShadow = true;
+    this.propeller.add(blade);
+    this.propeller.position.set(50, 0, 0);
+    this.mesh.add(this.propeller);
   }
 }

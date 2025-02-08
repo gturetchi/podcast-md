@@ -70,6 +70,8 @@ export default function Index() {
     scene.add(sky.mesh);
 
     const plane = new Airplane();
+    plane.mesh.scale.set(0.25, 0.25, 0.25);
+    plane.mesh.position.y = 100;
     scene.add(plane.mesh);
 
     function loop() {
