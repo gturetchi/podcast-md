@@ -74,8 +74,47 @@ export default function Index() {
     plane.mesh.position.y = 100;
     scene.add(plane.mesh);
 
+    let mousePos = { x: 0, y: 0 };
+
+    function handleMouseMove(event: MouseEvent) {
+      const x = (event.clientX / window.innerWidth) * 2 - 1;
+      const y = -((event.clientY / window.innerHeight) * 2 - 1);
+      mousePos = { x, y };
+    }
+
+    function normalize(
+      v: number,
+      vmin: number,
+      vmax: number,
+      tmin: number,
+      tmax: number
+    ) {
+      const nv = Math.max(Math.min(v, vmax), vmin);
+      const dv = vmax - vmin;
+      const pc = (nv - vmin) / dv;
+      const dt = tmax - tmin;
+      const tv = tmin + pc * dt;
+      return tv;
+    }
+
+    function updatePlane() {
+      const targetX = normalize(mousePos.x, -1, 1, -100, 100);
+      const targetY = normalize(mousePos.y, -1, 1, 25, 175);
+
+      plane.mesh.position.y = targetY;
+      plane.mesh.position.x = targetX;
+      plane.propeller.rotation.x += 0.3;
+    }
+
+    window.addEventListener("mousemove", handleMouseMove);
+
     function loop() {
+      plane.propeller.rotation.x += 0.3;
+      sea.mesh.rotation.z += 0.005;
       sky.mesh.rotation.z += 0.003;
+
+      updatePlane();
+
       renderer.render(scene, camera);
       requestAnimationFrame(loop);
     }
