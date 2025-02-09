@@ -114,6 +114,7 @@ export default function Index() {
       sky.mesh.rotation.z += 0.003;
 
       updatePlane();
+      sea.moveWaves();
 
       renderer.render(scene, camera);
       requestAnimationFrame(loop);
