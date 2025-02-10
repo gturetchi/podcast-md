@@ -9,7 +9,23 @@ export class Airplane {
   }
 
   private createAirplane(): void {
-    const geomCockpit = new THREE.BoxGeometry(60, 50, 50, 1, 1, 1);
+    let geomCockpit = new THREE.BoxGeometry(60, 50, 50, 1, 1, 1);
+    geomCockpit = geomCockpit.toNonIndexed();
+
+    const positionAttribute = geomCockpit.attributes.position;
+
+    for (let i = 0; i < positionAttribute.count; i++) {
+      const x = positionAttribute.getX(i);
+      let y = positionAttribute.getY(i);
+      let z = positionAttribute.getZ(i);
+      if (y > 0) y -= 10;
+      if (z > 0) z += 20;
+
+      positionAttribute.setXYZ(i, x, y, z);
+    }
+
+    positionAttribute.needsUpdate = true;
+    geomCockpit.computeVertexNormals();
     const matCockpit = new THREE.MeshPhongMaterial({
       color: 0xf25346,
       shading: THREE.FlatShading,

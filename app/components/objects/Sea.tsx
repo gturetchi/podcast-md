@@ -7,22 +7,20 @@ export class Sea {
   waves: Wave[] = [];
 
   constructor() {
-    this.geom = new THREE.CylinderGeometry(600, 600, 800, 40, 10); // Fix: Define geom before using it
+    this.geom = new THREE.CylinderGeometry(600, 600, 800, 40, 10);
     this.mat = new THREE.MeshPhongMaterial({
       color: 0x68c3c0,
       transparent: true,
       opacity: 0.8,
-      flatShading: true, // Fix: Use `flatShading` instead of `shading`
+      flatShading: true,
     });
 
     this.createSea();
   }
 
   private createSea(): void {
-    // Fix: Use applyMatrix4 (modern Three.js)
     this.geom.applyMatrix4(new THREE.Matrix4().makeRotationX(-Math.PI / 2));
 
-    // Fix: Access vertex positions via BufferGeometry
     const positionAttribute = this.geom.getAttribute("position");
     const vertexCount = positionAttribute.count;
 
