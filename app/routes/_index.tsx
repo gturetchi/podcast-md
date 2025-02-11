@@ -3,9 +3,10 @@ import { useEffect, useRef } from "react";
 import "public/styles.css";
 
 import * as THREE from "three";
-import { Sky } from "app/components/objects/sky";
-import { Sea } from "app/components/objects/sea";
+import { Sky } from "app/components/objects/Sky";
+import { Sea } from "app/components/objects/Sea";
 import { Airplane } from "~/components/objects/Airplane";
+import { Pilot } from "app/components/objects/Pilot";
 
 export const meta: MetaFunction = () => {
   return [
@@ -106,6 +107,9 @@ export default function Index() {
       plane.propeller.rotation.x += 0.3;
     }
 
+    const pilot = new Pilot();
+    scene.add(pilot.mesh);
+
     window.addEventListener("mousemove", handleMouseMove);
 
     function loop() {
@@ -114,6 +118,8 @@ export default function Index() {
       sky.mesh.rotation.z += 0.003;
 
       updatePlane();
+      pilot.updateHairs();
+
       sea.moveWaves();
 
       renderer.render(scene, camera);
