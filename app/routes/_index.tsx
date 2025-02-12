@@ -75,6 +75,11 @@ export default function Index() {
     plane.mesh.position.y = 100;
     scene.add(plane.mesh);
 
+    const pilot = new Pilot();
+    pilot.mesh.scale.set(0.35, 0.35, 0.35);
+    pilot.mesh.position.y = 108;
+    scene.add(pilot.mesh);
+
     let mousePos = { x: 0, y: 0 };
 
     function handleMouseMove(event: MouseEvent) {
@@ -104,11 +109,12 @@ export default function Index() {
 
       plane.mesh.position.y = targetY;
       plane.mesh.position.x = targetX;
+
+      pilot.mesh.position.y = targetY + 7;
+      pilot.mesh.position.x = targetX;
+
       plane.propeller.rotation.x += 0.3;
     }
-
-    const pilot = new Pilot();
-    scene.add(pilot.mesh);
 
     window.addEventListener("mousemove", handleMouseMove);
 
