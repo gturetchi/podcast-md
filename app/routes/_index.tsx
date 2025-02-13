@@ -42,8 +42,15 @@ export default function Index() {
     renderer.shadowMap.enabled = true;
     mountRef.current.appendChild(renderer.domElement);
 
+    renderer.physicallyCorrectLights = true;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.0;
+    renderer.outputEncoding = THREE.sRGBEncoding;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
     //LIGHT SETUP
-    const hemisphereLight = new THREE.HemisphereLight(0xaaaaaa, 0x000000, 0.9);
+    const hemisphereLight = new THREE.HemisphereLight(0xb1e1ff, 0xb97a20, 0.5);
     const shadowLight = new THREE.DirectionalLight(0xffffff, 0.9);
     shadowLight.position.set(150, 350, 350);
     shadowLight.castShadow = true;
