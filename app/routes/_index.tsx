@@ -7,6 +7,7 @@ import { Sky } from "app/components/objects/Sky";
 import { Sea } from "app/components/objects/Sea";
 import { Airplane } from "~/components/objects/Airplane";
 import { Pilot } from "app/components/objects/Pilot";
+import { GlassObject } from "app/components/objects/GlassObject";
 
 export const meta: MetaFunction = () => {
   return [
@@ -124,6 +125,11 @@ export default function Index() {
     }
 
     window.addEventListener("mousemove", handleMouseMove);
+
+    const glassObject = new GlassObject();
+    glassObject.mesh.position.set(0, 100, 50);
+    glassObject.mesh.scale.set(50, 50, 50);
+    scene.add(glassObject.mesh);
 
     function loop() {
       plane.propeller.rotation.x += 0.3;
