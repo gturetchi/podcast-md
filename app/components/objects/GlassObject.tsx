@@ -14,10 +14,16 @@ export class GlassObject {
     const geom = new THREE.IcosahedronGeometry(1, 0);
 
     const material = new THREE.MeshPhysicalMaterial({
-      roughness: 0,
-      transmission: 1,
-      thickness: 0.5,
-      envMap: hdrEquirect,
+      metalness: 0.9,
+      roughness: 0.05,
+      envMapIntensity: 0.9,
+      clearcoat: 1,
+      transparent: true,
+      opacity: 0.5,
+      reflectivity: 0.2,
+      refractionRatio: 0.985,
+      ior: 0.9,
+      side: THREE.BackSide,
     });
     this.mesh = new THREE.Mesh(geom, material);
   }
