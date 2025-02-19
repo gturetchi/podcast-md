@@ -5,19 +5,21 @@ export class GlassObject {
   mesh: THREE.Object3D;
 
   constructor() {
-    const geom = new THREE.IcosahedronGeometry(1, 0);
+    const geom = new THREE.IcosahedronGeometry(0.67, 24);
+
+    const hdrEquirect = new RGBELoader().load(
+      "/empty_warehouse.hdr",
+      (texture: THREE.Texture) => {
+        texture.mapping = THREE.EquirectangularReflectionMapping;
+      },
+    );
 
     const material = new THREE.MeshPhysicalMaterial({
-      metalness: 0.9,
-      roughness: 0.05,
-      envMapIntensity: 0.9,
-      clearcoat: 1,
-      transparent: true,
-      opacity: 0.5,
-      reflectivity: 0.2,
-      refractionRatio: 0.985,
-      ior: 0.9,
-      side: THREE.BackSide,
+      transmission: 1.0,
+      thickness: 1.5,
+      roughness: 0.07,
+      envMap: hdrEquirect,
+      envMapIntensity: 1.5,
     });
     this.mesh = new THREE.Mesh(geom, material);
   }

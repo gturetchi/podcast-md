@@ -4,6 +4,7 @@ import "public/styles.css";
 
 import * as THREE from "three";
 import { GlassObject } from "app/components/objects/GlassObject";
+import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 
 export const meta: MetaFunction = () => {
   return [
@@ -30,44 +31,44 @@ export default function Index() {
       10000,
     );
 
-    camera.position.x = 0;
     camera.position.z = 200;
-    camera.position.y = 100;
 
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: false });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.shadowMap.enabled = true;
     mountRef.current.appendChild(renderer.domElement);
 
-    renderer.physicallyCorrectLights = true;
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.0;
-    renderer.outputEncoding = THREE.sRGBEncoding;
-    renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    const bgTexture = new THREE.TextureLoader().load("/podcaST2.jpg");
+    bgTexture.colorSpace = THREE.SRGBColorSpace;
 
-    //LIGHT SETUP
-    const hemisphereLight = new THREE.HemisphereLight(0xb1e1ff, 0xb97a20, 0.5);
-    const shadowLight = new THREE.DirectionalLight(0xffffff, 0.9);
-    shadowLight.position.set(150, 350, 350);
-    shadowLight.castShadow = true;
-    shadowLight.shadow.camera.left = -400;
-    shadowLight.shadow.camera.right = 400;
-    shadowLight.shadow.camera.top = 400;
-    shadowLight.shadow.camera.bottom = -400;
-    shadowLight.shadow.camera.near = 1;
-    shadowLight.shadow.camera.far = 1000;
+    const distance = 199;
+    const height = 2 * Math.tan((camera.fov * Math.PI) / 360) * distance;
+    const width = height * camera.aspect;
 
-    shadowLight.shadow.mapSize.width = 2048;
-    shadowLight.shadow.mapSize.height = 2048;
+    const bgGeometry = new THREE.PlaneGeometry(width, height);
+    const bgMaterial = new THREE.MeshBasicMaterial({ map: bgTexture });
+    const bgMesh = new THREE.Mesh(bgGeometry, bgMaterial);
 
-    scene.add(hemisphereLight);
-    scene.add(shadowLight);
+    bgMesh.position.set(0, 0, -1);
+    // scene.add(bgMesh);
+
+    // const rgbeLoader = new RGBELoader();
+    // rgbeLoader.load("/empty_warehouse.hdr", (hdrTexture) => {
+    //   hdrTexture.mapping = THREE.EquirectangularReflectionMapping;
+    //   scene.environment = hdrTexture; // Set environment map
+    //   scene.background = null; // Keep transparent background
+    // });
 
     const glassObject = new GlassObject();
-    glassObject.mesh.position.set(0, 100, 50);
+    glassObject.mesh.position.set(0, 0, 0);
     glassObject.mesh.scale.set(50, 50, 50);
     scene.add(glassObject.mesh);
+
+    scene.background = new THREE.Color(0x615767);
+    const loader = new THREE.TextureLoader();
+    loader.load("/podcaST2.jpg", (texture) => {
+      texture.colorSpace = THREE.SRGBColorSpace;
+      scene.background = texture; // Set the scene background
+    });
 
     function loop() {
       renderer.render(scene, camera);
@@ -84,7 +85,7 @@ export default function Index() {
 
   return (
     <div className="h-screen w-screen">
-      <div ref={mountRef} className="h-screen w-screen"></div>;
+      <div ref={mountRef} className="h-screen w-screen"></div>
     </div>
   );
 }

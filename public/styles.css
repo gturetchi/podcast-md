@@ -1,4 +1,9 @@
 body {
     background: #ffffff;
-    background-image: url("https://picsum.photos/id/11/1920/1080");
+}
+
+.background {
+    background: #ffffff;
+    background-image: url("podcaST2.jpg");
+    background-size: cover;
 }
