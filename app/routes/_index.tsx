@@ -4,7 +4,6 @@ import "public/styles.css";
 
 import * as THREE from "three";
 import { GlassObject } from "app/components/objects/GlassObject";
-import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader";
 
 export const meta: MetaFunction = () => {
   return [
@@ -49,14 +48,6 @@ export default function Index() {
     const bgMesh = new THREE.Mesh(bgGeometry, bgMaterial);
 
     bgMesh.position.set(0, 0, -1);
-    // scene.add(bgMesh);
-
-    // const rgbeLoader = new RGBELoader();
-    // rgbeLoader.load("/empty_warehouse.hdr", (hdrTexture) => {
-    //   hdrTexture.mapping = THREE.EquirectangularReflectionMapping;
-    //   scene.environment = hdrTexture; // Set environment map
-    //   scene.background = null; // Keep transparent background
-    // });
 
     const glassObject = new GlassObject();
     glassObject.mesh.position.set(0, 0, 0);
